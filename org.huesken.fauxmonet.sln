@@ -1,17 +1,38 @@
-
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "org.huesken.fauxmonet", "org.huesken.fauxmonet\org.huesken.fauxmonet.csproj", "{31FDB59C-0BDC-4799-B1D3-3CE075609447}"
+# Visual Studio 15
+VisualStudioVersion = 15.0.27130.2010
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "org.huesken.hueemu.net", "org.huesken.fauxmonet.net\org.huesken.hueemu.net.csproj", "{E898C2A6-E674-41EA-B20F-DDF9361723D8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "org.huesken.hueEmu.Console", "org.huesken.fauxmonet.Console\org.huesken.hueEmu.Console.csproj", "{A0298BF8-3A98-4833-86B8-2101D2B7F43B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
 		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{31FDB59C-0BDC-4799-B1D3-3CE075609447}.Debug|x86.ActiveCfg = Debug|x86
-		{31FDB59C-0BDC-4799-B1D3-3CE075609447}.Debug|x86.Build.0 = Debug|x86
-		{31FDB59C-0BDC-4799-B1D3-3CE075609447}.Release|x86.ActiveCfg = Release|x86
-		{31FDB59C-0BDC-4799-B1D3-3CE075609447}.Release|x86.Build.0 = Release|x86
+		{E898C2A6-E674-41EA-B20F-DDF9361723D8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E898C2A6-E674-41EA-B20F-DDF9361723D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E898C2A6-E674-41EA-B20F-DDF9361723D8}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{E898C2A6-E674-41EA-B20F-DDF9361723D8}.Debug|x86.Build.0 = Debug|Any CPU
+		{E898C2A6-E674-41EA-B20F-DDF9361723D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E898C2A6-E674-41EA-B20F-DDF9361723D8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E898C2A6-E674-41EA-B20F-DDF9361723D8}.Release|x86.ActiveCfg = Release|Any CPU
+		{E898C2A6-E674-41EA-B20F-DDF9361723D8}.Release|x86.Build.0 = Release|Any CPU
+		{A0298BF8-3A98-4833-86B8-2101D2B7F43B}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{A0298BF8-3A98-4833-86B8-2101D2B7F43B}.Debug|x86.ActiveCfg = Debug|x86
+		{A0298BF8-3A98-4833-86B8-2101D2B7F43B}.Debug|x86.Build.0 = Debug|x86
+		{A0298BF8-3A98-4833-86B8-2101D2B7F43B}.Release|Any CPU.ActiveCfg = Release|x86
+		{A0298BF8-3A98-4833-86B8-2101D2B7F43B}.Release|x86.ActiveCfg = Release|x86
+		{A0298BF8-3A98-4833-86B8-2101D2B7F43B}.Release|x86.Build.0 = Release|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {807B0AB9-BF01-4C66-9770-26739B162669}
 	EndGlobalSection
 EndGlobal
