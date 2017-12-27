@@ -27,12 +27,24 @@ namespace org.huesken.hueemu.net
         private static Thread threadNotify;
         private static Regex regexMatchMX = new Regex(@"MX: (\d)", RegexOptions.Multiline);
         private static Random rnd = new Random(DateTime.Now.Millisecond);
+        private static Socket udpSocket;
         private static string IpAdressToPublish;
         private static string hueId;
         private static string uuid;
+        private static IPEndPoint multicastEndPoint;
+
+        public static void BeginReceive(Socket UdpSocket)
+        {
+            IPEndPoint sender = new IPEndPoint(IPAddress.Any, 0);
+            EndPoint tempRemoteEP = (EndPoint)sender;
+
+            UdpSocket.BeginReceiveFrom(receiveBuffer, 0, receiveBuffer.Length, SocketFlags.None, ref tempRemoteEP, OnReceive, UdpSocket);
+
+        }
+
         public static void Start(string ipAdress, PhysicalAddress mac)
         {
-            hueId = mac.ToString().ToUpper().Substring(0, 6)+ "FFFE"+ mac.ToString().ToUpper().Substring(6, 6);
+            hueId = mac.ToString().ToUpper().Substring(0, 6) + "FFFE" + mac.ToString().ToUpper().Substring(6, 6);
             uuid = "2f402f80-da50-11e1-9b23-" + mac.ToString().ToLower();
             // Creates a temporary EndPoint to pass to EndReceiveFrom.
             IPEndPoint sender = new IPEndPoint(IPAddress.Any, 0);
@@ -40,19 +52,17 @@ namespace org.huesken.hueemu.net
 
             IpAdressToPublish = ipAdress;
             IPEndPoint LocalEndPoint = new IPEndPoint(IPAddress.Any, 1900);
-            IPEndPoint MulticastEndPoint = new IPEndPoint(IPAddress.Parse("239.255.255.250"), 1900);
+            multicastEndPoint = new IPEndPoint(IPAddress.Parse("239.255.255.250"), 1900);
 
-            Socket UdpSocket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
+            udpSocket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
 
-            UdpSocket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
-            UdpSocket.Bind(LocalEndPoint);
-            UdpSocket.SetSocketOption(SocketOptionLevel.IP, SocketOptionName.AddMembership, new MulticastOption(MulticastEndPoint.Address, IPAddress.Any));
-            UdpSocket.SetSocketOption(SocketOptionLevel.IP, SocketOptionName.MulticastTimeToLive, 2);
-            UdpSocket.SetSocketOption(SocketOptionLevel.IP, SocketOptionName.MulticastLoopback, true);
+            udpSocket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
+            udpSocket.Bind(LocalEndPoint);
+            udpSocket.SetSocketOption(SocketOptionLevel.IP, SocketOptionName.AddMembership, new MulticastOption(multicastEndPoint.Address, IPAddress.Any));
+            udpSocket.SetSocketOption(SocketOptionLevel.IP, SocketOptionName.MulticastTimeToLive, 2);
+            udpSocket.SetSocketOption(SocketOptionLevel.IP, SocketOptionName.MulticastLoopback, true);
 
-            //UdpSocket.BeginReceive(receiveBuffer, 0, receiveBuffer.Length, SocketFlags.None, OnReceive, UdpSocket);
-            UdpSocket.BeginReceiveFrom(receiveBuffer, 0, receiveBuffer.Length,SocketFlags.None,ref tempRemoteEP, OnReceive, UdpSocket);
-
+            BeginReceive(udpSocket);
 
             threadNotify = new Thread(new ThreadStart(() => NotifyLoop()));
             threadNotify.Start();
@@ -71,8 +81,14 @@ namespace org.huesken.hueemu.net
                 // custom_message = { 0: { "nt": "upnp:rootdevice", "usn": "uuid:2f402f80-da50-11e1-9b23-" + mac + "::upnp:rootdevice"}, 1: { "nt": "uuid:2f402f80-da50-11e1-9b23-" + mac, "usn": "uuid:2f402f80-da50-11e1-9b23-" + mac}, 2: { "nt": "urn:schemas-upnp-org:device:basic:1", "usn": "uuid:2f402f80-da50-11e1-9b23-" + mac} }
                 // sent = sock.sendto(message + "NT: " + custom_message[x]["nt"] + "\r\nUSN: " + custom_message[x]["usn"] + "\r\n\r\n", multicast_group_s)
                 // sent = sock.sendto(message + "NT: " + custom_message[x]["nt"] + "\r\nUSN: " + custom_message[x]["usn"] + "\r\n\r\n", multicast_group_s)
+                byte[] ssdp_annouce = System.Text.Encoding.Default.GetBytes(
+                    "NOTIFY * HTTP/1.1\r\nHOST: 239.255.255.250:1900\r\nCACHE-CONTROL: max-age=100\r\nLOCATION: http://" + IpAdressToPublish + ":80/description.xml\r\nSERVER: Linux/3.14.0 UPnP/1.0 IpBridge/1.20.0\r\nNTS: ssdp:alive\r\nhue-bridgeid: " + hueId + "\r\n" +
+                    "NT: upnp:rootdevice\r\n" +
+                    "USN: uuid:" + uuid + "::upnp:rootdevice\r\n\r\n");
 
+                udpSocket.SendTo(ssdp_annouce, multicastEndPoint);
                 Thread.Sleep(1000 * 60);
+
             }
         }
 
@@ -87,7 +103,9 @@ namespace org.huesken.hueemu.net
 			{
                 
 				textBuffer.Enqueue(new EntityDataGram() { Message = Encoding.UTF8.GetString(receiveBuffer, 0, read), Sender = tempRemoteEP });
-				udpSocket.BeginReceive(receiveBuffer, 0, receiveBuffer.Length, SocketFlags.None, OnReceive, udpSocket);
+                BeginReceive(udpSocket);
+                //udpSocket.BeginReceive(receiveBuffer, 0, receiveBuffer.Length, SocketFlags.None, OnReceive, udpSocket);
+                BeginReceive(udpSocket);
 
 			}
 			else
@@ -138,13 +156,16 @@ namespace org.huesken.hueemu.net
             {
                 if (content.Message.Contains("ssdp:discover"))
                 {
-                    Debug.WriteLine(content);
+                    Debug.WriteLine("Message from " + content.Sender.ToString());
+                    Debug.WriteLine(content.Message);
                     var result = regexMatchMX.Matches(content.Message);
                     var mx = result.Cast<Match>().FirstOrDefault()?.Groups?.Cast<Group>()?.ElementAtOrDefault(1)?.Value;
                     int imx = mx != null ? int.Parse(mx) * 1000 : 250;
+
                     new Thread(new ThreadStart(() => {
                         Thread.Sleep(rnd.Next(imx));
-                        udpSocket.Send(ssdp_response);
+                        Debug.WriteLine("Sending Reply to " + content.Sender);
+                        udpSocket.SendTo(ssdp_response, content.Sender);
                     })).Start();
                 }
             }
