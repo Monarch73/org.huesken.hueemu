@@ -129,7 +129,8 @@ namespace org.huesken.hueemu.net
         {
             byte[] ssdp_response = System.Text.Encoding.Default.GetBytes(
                 "HTTP/1.1 200 OK\r\nHOST: 239.255.255.250:1900\r\nEXT:\r\nCACHE-CONTROL: max-age=100\r\nLOCATION: http://" + IpAdressToPublish + ":80/description.xml\r\nSERVER: Linux/3.14.0 UPnP/1.0 IpBridge/1.20.0\r\nhue-bridgeid: " + hueId + "\r\n" +
-                "ST: upnp:rootdevice\r\n" +
+                //"ST: upnp:rootdevice\r\n" +
+                "ST: urn:schemas-upnp-org:device:basic:1\r\n"+
                 "USN: uuid:" + uuid + "::upnp:rootdevice\r\n\r\n"
                 );
             //	Response_message = 'HTTP/1.1 200 OK\r\nHOST: 239.255.255.250:1900\r\nEXT:\r\nCACHE-CONTROL: max-age=100\r\nLOCATION: http://' + getIpAddress() + ':80/description.xml\r\nSERVER: Linux/3.14.0 UPnP/1.0 IpBridge/1.20.0\r\nhue-bridgeid: ' + (mac[:6] + 'FFFE' + mac[6:]).upper() + '\r\n'
@@ -156,8 +157,8 @@ namespace org.huesken.hueemu.net
             {
                 if (content.Message.Contains("ssdp:discover"))
                 {
-                    Debug.WriteLine("Message from " + content.Sender.ToString());
-                    Debug.WriteLine(content.Message);
+                    //Debug.WriteLine("Message from " + content.Sender.ToString());
+                    //Debug.WriteLine(content.Message);
                     var result = regexMatchMX.Matches(content.Message);
                     var mx = result.Cast<Match>().FirstOrDefault()?.Groups?.Cast<Group>()?.ElementAtOrDefault(1)?.Value;
                     int imx = mx != null ? int.Parse(mx) * 1000 : 250;
