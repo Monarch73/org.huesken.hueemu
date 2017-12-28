@@ -19,7 +19,7 @@ namespace org.huesken.fauxmonet.net.Properties {
     // -Klasse über ein Tool wie ResGen oder Visual Studio automatisch generiert.
     // Um einen Member hinzuzufügen oder zu entfernen, bearbeiten Sie die .ResX-Datei und führen dann ResGen
     // mit der /str-Option erneut aus, oder Sie erstellen Ihr VS-Projekt neu.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class Resources {
@@ -66,7 +66,7 @@ namespace org.huesken.fauxmonet.net.Properties {
         ///	&quot;swversion&quot;:&quot;81012917&quot;,
         ///	&quot;bridgeid&quot;:&quot;##HUEID##&quot;,
         ///	&quot;portalservices&quot;:false,
-        ///	&quot;linkbutton&quot;:true,
+        ///	&quot;linkbutton&quot;:false,
         ///	&quot;mac&quot;:&quot;##MAC##&quot;,
         ///	&quot;dhcp&quot;:true,
         ///	&quot;ipaddress&quot;:&quot;##IP##&quot;,
@@ -98,8 +98,7 @@ namespace org.huesken.fauxmonet.net.Properties {
         ///		&lt;friendlyName&gt;Philips hue (##URLBASE##)&lt;/friendlyName&gt;
         ///		&lt;manufacturer&gt;Royal Philips Electronics&lt;/manufacturer&gt;
         ///		&lt;manufacturerURL&gt;http://www.philips.com&lt;/manufacturerURL&gt;
-        ///		&lt;modelDescription&gt;Philips hue Personal Wireless Lighting
-        ///		&lt;/modelDe [Rest der Zeichenfolge wurde abgeschnitten]&quot;; ähnelt.
+        ///		&lt;modelDescription&gt;Philips hue Personal Wireless Lighting [Rest der Zeichenfolge wurde abgeschnitten]&quot;; ähnelt.
         /// </summary>
         public static string description {
             get {
@@ -108,8 +107,39 @@ namespace org.huesken.fauxmonet.net.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die {&quot;manufacturername&quot;:&quot;OpenSource&quot;,&quot;modelid&quot;:&quot;LST001&quot;,&quot;name&quot;:&quot;Test 1&quot;,&quot;state&quot;:{&quot;on&quot;:false,&quot;hue&quot;:0,&quot;bri&quot;:0,&quot;sat&quot;:0,&quot;xy&quot;:[0.00000,0.00000],&quot;ct&quot;:500,&quot;alert&quot;:&quot;none&quot;,&quot;effect&quot;:&quot;none&quot;,&quot;colormode&quot;:&quot;hs&quot;,&quot;reachable&quot;:true},&quot;swversion&quot;:&quot;0.1&quot;,&quot;type&quot;:&quot;Dimmable light&quot;,&quot;uniqueid&quot;:&quot;60:01:94:0E:9E:F7-1&quot;}
+        /// ähnelt.
+        /// </summary>
+        public static string light1 {
+            get {
+                return ResourceManager.GetString("light1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die {&quot;manufacturername&quot;:&quot;OpenSource&quot;,&quot;modelid&quot;:&quot;LST001&quot;,&quot;name&quot;:&quot;Test 2&quot;,&quot;state&quot;:{&quot;on&quot;:false,&quot;hue&quot;:0,&quot;bri&quot;:0,&quot;sat&quot;:0,&quot;xy&quot;:[0.00000,0.00000],&quot;ct&quot;:500,&quot;alert&quot;:&quot;none&quot;,&quot;effect&quot;:&quot;none&quot;,&quot;colormode&quot;:&quot;hs&quot;,&quot;reachable&quot;:true},&quot;swversion&quot;:&quot;0.1&quot;,&quot;type&quot;:&quot;Dimmable light&quot;,&quot;uniqueid&quot;:&quot;60:01:94:0E:9E:F7-2&quot;}
+        /// ähnelt.
+        /// </summary>
+        public static string light2 {
+            get {
+                return ResourceManager.GetString("light2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die {&quot;1&quot;:{&quot;type&quot;:&quot;On/Off light&quot;,&quot;manufacturername&quot;:&quot;OpenSource&quot;,&quot;swversion&quot;:&quot;0.1&quot;,&quot;name&quot;:&quot;Hue LightStrips 1&quot;,&quot;uniqueid&quot;:&quot;60:01:94:0E:9E:F7-1&quot;,&quot;modelid&quot;:&quot;LST001&quot;,&quot;state&quot;:{&quot;on&quot;:false,&quot;alert&quot;:&quot;none&quot;,&quot;reachable&quot;:true}},&quot;2&quot;:{&quot;type&quot;:&quot;Dimmable light&quot;,&quot;manufacturername&quot;:&quot;OpenSource&quot;,&quot;swversion&quot;:&quot;0.1&quot;,&quot;name&quot;:&quot;Hue LightStrips 2&quot;,&quot;uniqueid&quot;:&quot;60:01:94:0E:9E:F7-2&quot;,&quot;modelid&quot;:&quot;LST001&quot;,&quot;state&quot;:{&quot;on&quot;:false,&quot;bri&quot;:0,&quot;alert&quot;:&quot;none&quot;,&quot;reachable&quot;:true}}}
+        /// ähnelt.
+        /// </summary>
+        public static string lights {
+            get {
+                return ResourceManager.GetString("lights", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die {
-        ///	&quot;1&quot;:{
+        ///  &quot;lights&quot;: {
+        ///    &quot;1&quot;: {
         ///		&quot;manufacturername&quot;: &quot;OSRAM&quot;,
         ///		&quot;modelid&quot;: &quot;Plug - LIGHTIFY&quot;,
         ///		&quot;name&quot;: &quot;TestLight&quot;,
@@ -122,16 +152,19 @@ namespace org.huesken.fauxmonet.net.Properties {
         ///		&quot;type&quot;: &quot;On/Off plug-in unit&quot;,
         ///		&quot;uniqueid&quot;: &quot;##MAC##-01&quot;
         ///    }
-        ///} ähnelt.
-        /// </summary>
-        public static string lights {
-            get {
-                return ResourceManager.GetString("lights", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die  ähnelt.
+        ///  },
+        ///  &quot;groups&quot;: {
+        ///
+        ///  },
+        ///  &quot;config&quot;: {
+        ///	&quot;name&quot;:&quot;hue emulator&quot;,
+        ///	&quot;swversion&quot;:&quot;81012917&quot;,
+        ///	&quot;bridgeid&quot;:&quot;##HUEID##&quot;,
+        ///	&quot;portalservices&quot;:false,
+        ///	&quot;linkbutton&quot;:false,
+        ///	&quot;mac&quot;:&quot;##MAC##&quot;,
+        ///	&quot;dhcp&quot;:true,
+        ///	&quot;ipaddress&quot;:&quot; [Rest der Zeichenfolge wurde abgeschnitten]&quot;; ähnelt.
         /// </summary>
         public static string wholeconfig {
             get {

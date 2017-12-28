@@ -124,6 +124,12 @@
   <data name="description" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\description.xml.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;ibm852</value>
   </data>
+  <data name="light1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\light1.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="light2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\light2.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
   <data name="lights" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\lights.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>

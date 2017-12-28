@@ -3,7 +3,7 @@
 	"swversion":"81012917",
 	"bridgeid":"##HUEID##",
 	"portalservices":false,
-	"linkbutton":true,
+	"linkbutton":false,
 	"mac":"##MAC##",
 	"dhcp":true,
 	"ipaddress":"##IP##",

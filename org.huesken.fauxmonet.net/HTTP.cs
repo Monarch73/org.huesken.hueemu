@@ -9,6 +9,7 @@ using System.Text.RegularExpressions;
 using System.Collections.Specialized;
 using System.Collections;
 using System.Net.NetworkInformation;
+using System.IO;
 
 namespace org.huesken.hueemu.net
 {
@@ -38,6 +39,10 @@ namespace org.huesken.hueemu.net
                 new KeyValuePair<Regex, OnHandler>(new Regex("/api/[a-z0-9A-Z]{3,}/config"), (x,y) => OnApiNouserConfig(x,y)),
                 new KeyValuePair<Regex, OnHandler>(new Regex("/api/config"), (x,y) => OnApiNouserConfig(x,y)),
 
+                new KeyValuePair<Regex, OnHandler>(new Regex("/api/[a-z0-9A-Z]{3,}/lights/(\\d)/state"), (x,y)=>OnApiLightsControlOnOff(x,y)),
+
+                new KeyValuePair<Regex, OnHandler>(new Regex("/api/[a-z0-9A-Z]{3,}/lights/(\\d)"), (x,y)=>OnApiLightsControlState(x,y)),
+
                 //                                           "/api/s1tqdEw8T50c5e5CPzm9FKh3VAeBcbMOiM5CbWFQ/lights"
                 new KeyValuePair<Regex, OnHandler>(new Regex("/api/[a-z0-9A-Z]{3,}/lights"), (x,y) => OnApiLights(x,y)),
                 new KeyValuePair<Regex, OnHandler>(new Regex("/api/[a-z0-9A-Z]{3,}"), (x,y)=> OnApiWholeConfig(x,y)),
@@ -53,6 +58,62 @@ namespace org.huesken.hueemu.net
 
             listenerThread = new Thread(new ThreadStart(ListenerThread));
             listenerThread.Start();
+        }
+
+        private static void OnApiLightsControlOnOff(HttpListenerContext context, MatchCollection matches)
+        {
+            var regexFalse = new Regex("\\{\"on\":\\s([a-z]{2,})\\}");
+            Debug.WriteLine("Reply by light control on off");
+            var lightNumber = matches[0].Groups[1].Value;
+            string json;
+            if (lightNumber == "1")
+            {
+                json = org.huesken.fauxmonet.net.Properties.Resources.light1;
+            }
+            else
+            {
+                json = org.huesken.fauxmonet.net.Properties.Resources.light2;
+            }
+
+            TextReader tr = new StreamReader(context.Request.InputStream);
+            var request = tr.ReadToEnd();
+
+            //{"on": true}
+            Debug.WriteLine(request);
+            var matchesFalse = regexFalse.Matches(request);
+            var onoff = matchesFalse[0].Groups[1].Value;
+
+            Console.WriteLine(lightNumber + "wird " + ((onoff == "false") ? "ausgeschaltet" : "eingeschaltet"));
+
+            var bytes = System.Text.Encoding.Default.GetBytes(json);
+
+            var response = context.Response;
+            response.StatusCode = 200;
+            response.ContentType = "application/json";
+            response.OutputStream.Write(bytes, 0, bytes.Length);
+        }
+
+        private static void OnApiLightsControlState(HttpListenerContext context, MatchCollection matches)
+        {
+            Debug.WriteLine("Reply by light config");
+            var lightNumber =  matches[0].Groups[1].Value;
+            string json;
+            if (lightNumber == "1")
+            {
+                json = org.huesken.fauxmonet.net.Properties.Resources.light1;
+            }
+            else
+            {
+                json = org.huesken.fauxmonet.net.Properties.Resources.light2;
+            }
+
+            var bytes = System.Text.Encoding.Default.GetBytes(json);
+
+            var response = context.Response;
+            response.StatusCode = 200;
+            response.ContentType = "application/json";
+            response.OutputStream.Write(bytes, 0, bytes.Length);
+
         }
 
         private static void OnApiWholeConfig(HttpListenerContext context, MatchCollection matches)
