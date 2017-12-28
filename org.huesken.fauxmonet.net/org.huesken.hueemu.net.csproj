@@ -52,5 +52,11 @@
   <ItemGroup>
     <None Include="Resources\lights.txt" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\config.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\wholeconfig.txt" />
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

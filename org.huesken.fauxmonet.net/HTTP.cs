@@ -18,22 +18,31 @@ namespace org.huesken.hueemu.net
         private static Thread listenerThread;
         private static string ipAdressToPublish;
         private delegate void OnHandler(HttpListenerContext context, MatchCollection matches);
-        private static IList<KeyValuePair<Regex, OnHandler>> urlRegex;
+        private static IList<KeyValuePair<Regex, OnHandler>> urlsToHandle;
 
         private static string udn;
         private static PhysicalAddress mac;
+        private static string hueId;
 
         public static void Start(string ipAdressToPublish, PhysicalAddress mac)
         {
             HTTP.mac = mac;
+            HTTP.hueId = mac.ToString().ToUpper().Substring(0, 6) + "FFFE" + mac.ToString().ToUpper().Substring(6, 6);
+
             udn = "uuid:2f402f80-da50-11e1-9b23-" + mac.ToString().ToLower();
 
-            urlRegex = new List<KeyValuePair<Regex, OnHandler>>()
+            urlsToHandle = new List<KeyValuePair<Regex, OnHandler>>()
             {
                 new KeyValuePair<Regex, OnHandler>(new Regex("/description.xml"), (x,y)=> OnDescription(x,y) ),
                 new KeyValuePair<Regex, OnHandler>(new Regex("/api/nouser/config"), (x,y)=> OnApiNouserConfig(x,y)),
+                new KeyValuePair<Regex, OnHandler>(new Regex("/api/[a-z0-9A-Z]{3,}/config"), (x,y) => OnApiNouserConfig(x,y)),
+                new KeyValuePair<Regex, OnHandler>(new Regex("/api/config"), (x,y) => OnApiNouserConfig(x,y)),
+
                 //                                           "/api/s1tqdEw8T50c5e5CPzm9FKh3VAeBcbMOiM5CbWFQ/lights"
-                new KeyValuePair<Regex, OnHandler>(new Regex("/api/[a-z0-9A-Z]{3,}/lights"), (x,y) => OnApiLights(x,y))
+                new KeyValuePair<Regex, OnHandler>(new Regex("/api/[a-z0-9A-Z]{3,}/lights"), (x,y) => OnApiLights(x,y)),
+                new KeyValuePair<Regex, OnHandler>(new Regex("/api/[a-z0-9A-Z]{3,}"), (x,y)=> OnApiWholeConfig(x,y)),
+                new KeyValuePair<Regex, OnHandler>(new Regex("/api/"), (x,y)=> OnApiWholeConfig(x,y)),
+
             };
 
             HTTP.ipAdressToPublish = ipAdressToPublish;
@@ -46,22 +55,72 @@ namespace org.huesken.hueemu.net
             listenerThread.Start();
         }
 
-        private static void OnApiLights(HttpListenerContext context, MatchCollection matches)
+        private static void OnApiWholeConfig(HttpListenerContext context, MatchCollection matches)
         {
-            var json = org.huesken.fauxmonet.net.Properties.Resources.lights;
+            Debug.WriteLine("Reply by whole config");
+            var json = org.huesken.fauxmonet.net.Properties.Resources.wholeconfig;
+
+            byte[] macBytes = mac.GetAddressBytes();
+            var macString=string.Join(":", macBytes.Select(macByte => macByte.ToString("X2")).ToArray());
+
+            json = json.Replace("##MAC##", macString);
+            json = json.Replace("##IP##", ipAdressToPublish);
+            json = json.Replace("##HUEID##", hueId);
+
             var bytes = System.Text.Encoding.Default.GetBytes(json);
 
             var response = context.Response;
-            response.ContentType = "text/json";
+            response.StatusCode = 200;
+            response.ContentType = "application/json";
             response.OutputStream.Write(bytes, 0, bytes.Length);
         }
 
-        private static void OnApiNouserConfig(HttpListenerContext x, MatchCollection y)
+        private static void OnApiLights(HttpListenerContext context, MatchCollection matches)
         {
+            Debug.WriteLine("Reply by lights config");
+
+            var json = org.huesken.fauxmonet.net.Properties.Resources.lights;
+
+            byte[] macBytes = mac.GetAddressBytes();
+            var macString = string.Join(":", macBytes.Select(macByte => macByte.ToString("X2")).ToArray());
+
+            json = json.Replace("##MAC##", macString);
+            json = json.Replace("##IP##", ipAdressToPublish);
+            json = json.Replace("##HUEID##", hueId);
+
+            var bytes = System.Text.Encoding.Default.GetBytes(json);
+
+            var response = context.Response;
+            response.StatusCode = 200;
+            response.ContentType = "application/json";
+            response.OutputStream.Write(bytes, 0, bytes.Length);
+        }
+
+        private static void OnApiNouserConfig(HttpListenerContext context, MatchCollection matches)
+        {
+            Debug.WriteLine("Reply by config");
+
+            var json = org.huesken.fauxmonet.net.Properties.Resources.config;
+
+            byte[] macBytes = mac.GetAddressBytes();
+            var macString = string.Join(":", macBytes.Select(macByte => macByte.ToString("X2")).ToArray());
+
+            json = json.Replace("##MAC##", macString);
+            json = json.Replace("##IP##", ipAdressToPublish);
+            json = json.Replace("##HUEID##", hueId);
+
+            var bytes = System.Text.Encoding.Default.GetBytes(json);
+
+            var response = context.Response;
+            response.StatusCode = 200;
+            response.ContentType = "application/json";
+            response.OutputStream.Write(bytes, 0, bytes.Length);
         }
 
         public static void OnDescription(HttpListenerContext context, MatchCollection matches)
         {
+            Debug.WriteLine("Reply by description");
+
             var xmlResponse = org.huesken.fauxmonet.net.Properties.Resources.description;
             xmlResponse = xmlResponse.Replace("##URLBASE##", ipAdressToPublish);
             xmlResponse = xmlResponse.Replace("##MAC##", mac.ToString().ToLower());
@@ -99,7 +158,7 @@ namespace org.huesken.hueemu.net
                 var request = context.Request;
                 Debug.WriteLine("Incoming Webrequest from " + request.RemoteEndPoint.ToString() + ": " + request.RawUrl);
                 bool contextHandled = false;
-                foreach (var i in urlRegex)
+                foreach (var i in urlsToHandle)
                 {
                     var matches = i.Key.Matches(request.RawUrl);
                     if (matches.Count>0)
@@ -113,6 +172,7 @@ namespace org.huesken.hueemu.net
                 if (contextHandled==false)
                 {
                     // 404 the hell out of here
+                    Debug.WriteLine("Reply by 404");
                     context.Response.StatusCode = 404;
                     context.Response.Close();
                 }
