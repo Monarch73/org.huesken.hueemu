@@ -91,13 +91,13 @@ namespace org.huesken.hueemu.Console
             string defaultGwIp = GetDefaultGatewayIp();
             GetIpOfInternetInterface(defaultGwIp, out string myIP, out PhysicalAddress mac);
 
-            Debug.WriteLine(string.Format("Starting HueEmulation for IP {0}:{1}", myIP, mac.ToString()));
-            Debug.WriteLine(mac.ToString().ToUpper().Substring(0, 6) + "FFFE" + mac.ToString().ToUpper().Substring(6, 6));
+            System.Console.WriteLine(string.Format("Starting HueEmulation for IP {0}:{1}", myIP, mac.ToString()));
+            System.Console.WriteLine(mac.ToString().ToUpper().Substring(0, 6) + "FFFE" + mac.ToString().ToUpper().Substring(6, 6));
             ServiceController[] services = ServiceController.GetServices();
-            foreach (ServiceController service in services)
-            {
-                System.Console.WriteLine(service.ServiceName + "==" + service.Status);
-            }
+            ////foreach (ServiceController service in services)
+            ////{
+            ////    System.Console.WriteLine(service.ServiceName + "==" + service.Status);
+            ////}
 
         
 

@@ -63,7 +63,7 @@ namespace org.huesken.hueemu.net
         private static void OnApiLightsControlOnOff(HttpListenerContext context, MatchCollection matches)
         {
             var regexFalse = new Regex("\\{\"on\":\\s([a-z]{2,})\\}");
-            Debug.WriteLine("Reply by light control on off");
+            System.Console.WriteLine("Reply by light control on off");
             var lightNumber = matches[0].Groups[1].Value;
             string json;
             if (lightNumber == "1")
@@ -79,7 +79,7 @@ namespace org.huesken.hueemu.net
             var request = tr.ReadToEnd();
 
             //{"on": true}
-            Debug.WriteLine(request);
+            System.Console.WriteLine(request);
             var matchesFalse = regexFalse.Matches(request);
             var onoff = matchesFalse[0].Groups[1].Value;
 
@@ -95,7 +95,7 @@ namespace org.huesken.hueemu.net
 
         private static void OnApiLightsControlState(HttpListenerContext context, MatchCollection matches)
         {
-            Debug.WriteLine("Reply by light config");
+            System.Console.WriteLine("Reply by light config");
             var lightNumber =  matches[0].Groups[1].Value;
             string json;
             if (lightNumber == "1")
@@ -118,7 +118,7 @@ namespace org.huesken.hueemu.net
 
         private static void OnApiWholeConfig(HttpListenerContext context, MatchCollection matches)
         {
-            Debug.WriteLine("Reply by whole config");
+            System.Console.WriteLine("Reply by whole config");
             var json = org.huesken.fauxmonet.net.Properties.Resources.wholeconfig;
 
             byte[] macBytes = mac.GetAddressBytes();
@@ -138,7 +138,7 @@ namespace org.huesken.hueemu.net
 
         private static void OnApiLights(HttpListenerContext context, MatchCollection matches)
         {
-            Debug.WriteLine("Reply by lights config");
+            System.Console.WriteLine("Reply by lights config");
 
             var json = org.huesken.fauxmonet.net.Properties.Resources.lights;
 
@@ -159,7 +159,7 @@ namespace org.huesken.hueemu.net
 
         private static void OnApiNouserConfig(HttpListenerContext context, MatchCollection matches)
         {
-            Debug.WriteLine("Reply by config");
+            System.Console.WriteLine("Reply by config");
 
             var json = org.huesken.fauxmonet.net.Properties.Resources.config;
 
@@ -180,7 +180,7 @@ namespace org.huesken.hueemu.net
 
         public static void OnDescription(HttpListenerContext context, MatchCollection matches)
         {
-            Debug.WriteLine("Reply by description");
+            System.Console.WriteLine("Reply by description");
 
             var xmlResponse = org.huesken.fauxmonet.net.Properties.Resources.description;
             xmlResponse = xmlResponse.Replace("##URLBASE##", ipAdressToPublish);
@@ -217,7 +217,7 @@ namespace org.huesken.hueemu.net
             {
                 var context = listener.GetContext();
                 var request = context.Request;
-                Debug.WriteLine("Incoming Webrequest from " + request.RemoteEndPoint.ToString() + ": " + request.RawUrl);
+                System.Console.WriteLine("Incoming Webrequest from " + request.RemoteEndPoint.ToString() + ": " + request.RawUrl);
                 bool contextHandled = false;
                 foreach (var i in urlsToHandle)
                 {
@@ -233,7 +233,7 @@ namespace org.huesken.hueemu.net
                 if (contextHandled==false)
                 {
                     // 404 the hell out of here
-                    Debug.WriteLine("Reply by 404");
+                    System.Console.WriteLine("Reply by 404");
                     context.Response.StatusCode = 404;
                     context.Response.Close();
                 }

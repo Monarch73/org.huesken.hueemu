@@ -157,15 +157,15 @@ namespace org.huesken.hueemu.net
             {
                 if (content.Message.Contains("ssdp:discover"))
                 {
-                    //Debug.WriteLine("Message from " + content.Sender.ToString());
-                    //Debug.WriteLine(content.Message);
+                    //System.Console.WriteLine("Message from " + content.Sender.ToString());
+                    //System.Console.WriteLine(content.Message);
                     var result = regexMatchMX.Matches(content.Message);
                     var mx = result.Cast<Match>().FirstOrDefault()?.Groups?.Cast<Group>()?.ElementAtOrDefault(1)?.Value;
                     int imx = mx != null ? int.Parse(mx) * 1000 : 250;
 
                     new Thread(new ThreadStart(() => {
                         Thread.Sleep(rnd.Next(imx));
-                        Debug.WriteLine("Sending Reply to " + content.Sender);
+                        System.Console.WriteLine("Sending Reply to " + content.Sender);
                         udpSocket.SendTo(ssdp_response, content.Sender);
                     })).Start();
                 }
