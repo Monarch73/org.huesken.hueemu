@@ -1,21 +1,33 @@
 {
-  "lights": {
-    "1": {
-		"manufacturername": "OSRAM",
-		"modelid": "Plug - LIGHTIFY",
-		"name": "TestLight",
-		"state": {
-			"alert": "none",
-			"on": true,
-			"reachable": true
-		},
-		"swversion": "V1.03.21",
-		"type": "On/Off plug-in unit",
-		"uniqueid": "##MAC##-01"
-    }
-  },
+	"1":{
+		"type":"Dimmable light",
+		"manufacturername":"OpenSource",
+		"swversion":"0.1",
+		"name":"Test 1",
+		"uniqueid":"60:01:94:0E:9E:F7-1",
+		"modelid":"LST001",
+		"state":{
+			"on":false,
+			"bri":0,
+			"alert":"none",
+			"reachable":true
+		}
+	},
+	"2":{
+		"type":"Dimmable light",
+		"manufacturername":"OpenSource",
+		"swversion":"0.1",
+		"name":"Test 2",
+		"uniqueid":"60:01:94:0E:9E:F7-2",
+		"modelid":"LST001",
+		"state":{
+			"on":false,
+			"bri":0,
+			"alert":"none",
+			"reachable":true
+		}
+	},
   "groups": {
-
   },
   "config": {
 	"name":"hue emulator",
