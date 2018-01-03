@@ -47,7 +47,7 @@ namespace org.huesken.hueemu.net
                 new KeyValuePair<Regex, OnHandler>(new Regex("/api/[a-z0-9A-Z]{3,}/lights"), (x,y) => OnApiLights(x,y)),
                 new KeyValuePair<Regex, OnHandler>(new Regex("/api/[a-z0-9A-Z]{3,}"), (x,y)=> OnApiWholeConfig(x,y)),
                 new KeyValuePair<Regex, OnHandler>(new Regex("/api/"), (x,y)=> OnApiWholeConfig(x,y)),
-
+                new KeyValuePair<Regex, OnHandler>(new Regex("/api"), (x,y)=> OnApiWholeConfig(x,y)),
             };
 
             HTTP.ipAdressToPublish = ipAdressToPublish;
@@ -62,7 +62,7 @@ namespace org.huesken.hueemu.net
 
         private static void OnApiLightsControlOnOff(HttpListenerContext context, MatchCollection matches)
         {
-            var regexFalse = new Regex("\\{\"on\":\\s([a-z]{2,})\\}");
+            var regexFalse = new Regex("\\{\"on\":(\\s*)([a-z]{2,})\\}");
             System.Console.WriteLine("Reply by light control on off");
             var lightNumber = matches[0].Groups[1].Value;
             string json;
@@ -81,7 +81,7 @@ namespace org.huesken.hueemu.net
             //{"on": true}
             System.Console.WriteLine(request);
             var matchesFalse = regexFalse.Matches(request);
-            var onoff = matchesFalse[0].Groups[1].Value;
+            var onoff = matchesFalse[0].Groups[2].Value;
 
             Console.WriteLine(lightNumber + "wird " + ((onoff == "false") ? "ausgeschaltet" : "eingeschaltet"));
 
@@ -118,8 +118,18 @@ namespace org.huesken.hueemu.net
 
         private static void OnApiWholeConfig(HttpListenerContext context, MatchCollection matches)
         {
-            System.Console.WriteLine("Reply by whole config");
-            var json = org.huesken.fauxmonet.net.Properties.Resources.wholeconfig;
+            System.Console.Write("Reply: " + context.Request.HttpMethod);
+            string json;
+            if (context.Request.HttpMethod == "GET")
+            {
+                json = org.huesken.fauxmonet.net.Properties.Resources.wholeconfig;
+                System.Console.WriteLine(" whole config");
+            }
+            else
+            {
+                json = org.huesken.fauxmonet.net.Properties.Resources.success;
+                System.Console.WriteLine(" success");
+            }
 
             byte[] macBytes = mac.GetAddressBytes();
             var macString=string.Join(":", macBytes.Select(macByte => macByte.ToString("X2")).ToArray());

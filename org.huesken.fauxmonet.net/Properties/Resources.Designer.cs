@@ -127,7 +127,7 @@ namespace org.huesken.fauxmonet.net.Properties {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die {&quot;1&quot;:{&quot;type&quot;:&quot;On/Off light&quot;,&quot;manufacturername&quot;:&quot;OpenSource&quot;,&quot;swversion&quot;:&quot;0.1&quot;,&quot;name&quot;:&quot;Hue LightStrips 1&quot;,&quot;uniqueid&quot;:&quot;60:01:94:0E:9E:F7-1&quot;,&quot;modelid&quot;:&quot;LST001&quot;,&quot;state&quot;:{&quot;on&quot;:false,&quot;alert&quot;:&quot;none&quot;,&quot;reachable&quot;:true}},&quot;2&quot;:{&quot;type&quot;:&quot;Dimmable light&quot;,&quot;manufacturername&quot;:&quot;OpenSource&quot;,&quot;swversion&quot;:&quot;0.1&quot;,&quot;name&quot;:&quot;Hue LightStrips 2&quot;,&quot;uniqueid&quot;:&quot;60:01:94:0E:9E:F7-2&quot;,&quot;modelid&quot;:&quot;LST001&quot;,&quot;state&quot;:{&quot;on&quot;:false,&quot;bri&quot;:0,&quot;alert&quot;:&quot;none&quot;,&quot;reachable&quot;:true}}}
+        ///   Sucht eine lokalisierte Zeichenfolge, die {&quot;1&quot;:{&quot;type&quot;:&quot;Dimmable light&quot;,&quot;manufacturername&quot;:&quot;OpenSource&quot;,&quot;swversion&quot;:&quot;0.1&quot;,&quot;name&quot;:&quot;Test 1&quot;,&quot;uniqueid&quot;:&quot;60:01:94:0E:9E:F7-1&quot;,&quot;modelid&quot;:&quot;LST001&quot;,&quot;state&quot;:{&quot;on&quot;:false,&quot;bri&quot;:0,&quot;alert&quot;:&quot;none&quot;,&quot;reachable&quot;:true}},&quot;2&quot;:{&quot;type&quot;:&quot;Dimmable light&quot;,&quot;manufacturername&quot;:&quot;OpenSource&quot;,&quot;swversion&quot;:&quot;0.1&quot;,&quot;name&quot;:&quot;Test 2&quot;,&quot;uniqueid&quot;:&quot;60:01:94:0E:9E:F7-2&quot;,&quot;modelid&quot;:&quot;LST001&quot;,&quot;state&quot;:{&quot;on&quot;:false,&quot;bri&quot;:0,&quot;alert&quot;:&quot;none&quot;,&quot;reachable&quot;:true}}}
         /// ähnelt.
         /// </summary>
         public static string lights {
@@ -137,34 +137,43 @@ namespace org.huesken.fauxmonet.net.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die [{&quot;success&quot;:{&quot;username&quot;:&quot;api&quot;}}]
+        /// ähnelt.
+        /// </summary>
+        public static string success {
+            get {
+                return ResourceManager.GetString("success", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die {
-        ///  &quot;lights&quot;: {
-        ///    &quot;1&quot;: {
-        ///		&quot;manufacturername&quot;: &quot;OSRAM&quot;,
-        ///		&quot;modelid&quot;: &quot;Plug - LIGHTIFY&quot;,
-        ///		&quot;name&quot;: &quot;TestLight&quot;,
-        ///		&quot;state&quot;: {
-        ///			&quot;alert&quot;: &quot;none&quot;,
-        ///			&quot;on&quot;: true,
-        ///			&quot;reachable&quot;: true
-        ///		},
-        ///		&quot;swversion&quot;: &quot;V1.03.21&quot;,
-        ///		&quot;type&quot;: &quot;On/Off plug-in unit&quot;,
-        ///		&quot;uniqueid&quot;: &quot;##MAC##-01&quot;
-        ///    }
-        ///  },
-        ///  &quot;groups&quot;: {
-        ///
-        ///  },
-        ///  &quot;config&quot;: {
-        ///	&quot;name&quot;:&quot;hue emulator&quot;,
-        ///	&quot;swversion&quot;:&quot;81012917&quot;,
-        ///	&quot;bridgeid&quot;:&quot;##HUEID##&quot;,
-        ///	&quot;portalservices&quot;:false,
-        ///	&quot;linkbutton&quot;:false,
-        ///	&quot;mac&quot;:&quot;##MAC##&quot;,
-        ///	&quot;dhcp&quot;:true,
-        ///	&quot;ipaddress&quot;:&quot; [Rest der Zeichenfolge wurde abgeschnitten]&quot;; ähnelt.
+        ///	&quot;1&quot;:{
+        ///		&quot;type&quot;:&quot;Dimmable light&quot;,
+        ///		&quot;manufacturername&quot;:&quot;OpenSource&quot;,
+        ///		&quot;swversion&quot;:&quot;0.1&quot;,
+        ///		&quot;name&quot;:&quot;Test 1&quot;,
+        ///		&quot;uniqueid&quot;:&quot;60:01:94:0E:9E:F7-1&quot;,
+        ///		&quot;modelid&quot;:&quot;LST001&quot;,
+        ///		&quot;state&quot;:{
+        ///			&quot;on&quot;:false,
+        ///			&quot;bri&quot;:0,
+        ///			&quot;alert&quot;:&quot;none&quot;,
+        ///			&quot;reachable&quot;:true
+        ///		}
+        ///	},
+        ///	&quot;2&quot;:{
+        ///		&quot;type&quot;:&quot;Dimmable light&quot;,
+        ///		&quot;manufacturername&quot;:&quot;OpenSource&quot;,
+        ///		&quot;swversion&quot;:&quot;0.1&quot;,
+        ///		&quot;name&quot;:&quot;Test 2&quot;,
+        ///		&quot;uniqueid&quot;:&quot;60:01:94:0E:9E:F7-2&quot;,
+        ///		&quot;modelid&quot;:&quot;LST001&quot;,
+        ///		&quot;state&quot;:{
+        ///			&quot;on&quot;:false,
+        ///			&quot;bri&quot;:0,
+        ///			&quot;alert&quot;:&quot;none&quot;,
+        ///			&quot;re [Rest der Zeichenfolge wurde abgeschnitten]&quot;; ähnelt.
         /// </summary>
         public static string wholeconfig {
             get {

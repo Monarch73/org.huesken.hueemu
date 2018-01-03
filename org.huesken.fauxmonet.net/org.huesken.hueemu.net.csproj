@@ -64,5 +64,8 @@
   <ItemGroup>
     <None Include="Resources\light2.txt" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\success.txt" />
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>
