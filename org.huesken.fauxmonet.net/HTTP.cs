@@ -20,6 +20,7 @@ namespace org.huesken.hueemu.net
         private static string ipAdressToPublish;
         private delegate void OnHandler(HttpListenerContext context, MatchCollection matches);
         private static IList<KeyValuePair<Regex, OnHandler>> urlsToHandle;
+        private static bool[] lightState = new bool[3];  
 
         private static string udn;
         private static PhysicalAddress mac;
@@ -65,6 +66,8 @@ namespace org.huesken.hueemu.net
             var regexFalse = new Regex("\\{\"on\":(\\s*)([a-z]{2,})\\}");
             System.Console.WriteLine("Reply by light control on off");
             var lightNumber = matches[0].Groups[1].Value;
+            int ilightNumber = 0;
+            int.TryParse(lightNumber, out ilightNumber);
             string json;
             if (lightNumber == "1")
             {
@@ -83,7 +86,19 @@ namespace org.huesken.hueemu.net
             var matchesFalse = regexFalse.Matches(request);
             var onoff = matchesFalse[0].Groups[2].Value;
 
-            Console.WriteLine(lightNumber + "wird " + ((onoff == "false") ? "ausgeschaltet" : "eingeschaltet"));
+            var currentSwitch=false;
+            currentSwitch = (onoff == "false") ? false : true;
+
+            if (ilightNumber>=0 && ilightNumber<3)
+            {
+                currentSwitch = (onoff == "false") ? false : true;
+                lightState[ilightNumber] = currentSwitch;
+            }
+
+
+            Console.WriteLine(ilightNumber.ToString() + " wird " + ((onoff == "false") ? "ausgeschaltet" : "eingeschaltet"));
+
+            json = json.Replace("##STATE##", currentSwitch == false ? "false": "true");
 
             var bytes = System.Text.Encoding.Default.GetBytes(json);
 
@@ -97,6 +112,8 @@ namespace org.huesken.hueemu.net
         {
             System.Console.WriteLine("Reply by light config");
             var lightNumber =  matches[0].Groups[1].Value;
+            int ilightNumber = 0;
+            int.TryParse(lightNumber, out ilightNumber);
             string json;
             if (lightNumber == "1")
             {
@@ -106,6 +123,8 @@ namespace org.huesken.hueemu.net
             {
                 json = org.huesken.fauxmonet.net.Properties.Resources.light2;
             }
+
+            json = json.Replace("##STATE##", lightState[ilightNumber] == false ? "false":"true");
 
             var bytes = System.Text.Encoding.Default.GetBytes(json);
 
